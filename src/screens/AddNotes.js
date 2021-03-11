@@ -1,22 +1,61 @@
-import React from 'react'
+import React , {useState} from 'react'
 import {StyleSheet,View} from 'react-native'
-import {Text} from 'react-native-paper'
-
+import {IconButton,TextInput, FAB} from 'react-native-paper'
+ 
 import Header from '../component/Header'
  
-function AddNotes() {
+function AddNotes({navigation}) {
+    const [noteTitle , setNoteTitle] = useState('');
+    const [noteDescription,setNoteDescription] = useState('')
+
+    function onSaveNote(){
+        navigation.state.params.addNote({noteTitle,noteDescription});
+        navigation.goBack()
+    }
     return (
-    <>  
+    <>    
+    
         <Header titleText = "Add a note"/> 
-        <View style = {styles.container}>
-            <View style = {styles.titleContainer}>
-            <Text style = {styles.title}>Add note model screen</Text>
-            </View>
+        <IconButton
+    icon = "close"
+    size = {50}
+    color = 'red'
+    onPress = {()=>navigation.goBack()}
+    style = {styles.iconButton}
+   />
+        <View style = {styles.container}> 
+           <TextInput 
+                label = "Add note title here"
+                value = {noteTitle}
+                mode = 'outlined'
+                onChangeText = {setNoteTitle}
+                style = {styles.title}
+            /> 
+              <TextInput 
+                label = "Add note description"
+                value = {noteDescription}
+                
+                onChangeText = {setNoteDescription}
+                mode = 'flat'
+                multiline
+                style = {styles.text}
+                scrollEnabled
+                returnKeyLabel = 'done'
+                blurOnSubmit
+            />
+            <FAB
+             style = {styles.fab}
+             small
+             label = "Add note"
+             icon = 'check'
+             disabled = {noteTitle === ''?true : false}
+             onPress = {()=>onSaveNote()}
+              /> 
         </View>
 
     </>
         
-    )
+    ) 
 }
 
 const styles = StyleSheet.create({
@@ -27,6 +66,14 @@ const styles = StyleSheet.create({
         paddingHorizontal : 10
 
     },
+    iconButton : {
+      backgroundColor :'#219653',
+      position : 'absolute',
+      right : 0,
+      top : 40,
+      margin : 10,
+      zIndex : 2
+    },
     titleContainer : {
         alignItems : 'center',
         justifyContent : 'center',
@@ -34,8 +81,19 @@ const styles = StyleSheet.create({
 
     },
     title : {
-        fontSize : 20
+        fontSize : 24,
+        marginBottom : 16
     },
+    text : {
+        height : 300 ,
+        fontSize : 16
+    },
+    fab : {
+        position : 'absolute',
+        margin : 20,
+        right : 0,
+        bottom : 0
+    }
     
 })
 export default AddNotes
