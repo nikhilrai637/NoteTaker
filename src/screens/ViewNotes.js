@@ -1,5 +1,5 @@
 import React , {useState} from 'react'
-import {StyleSheet,View,Text,FlatList} from 'react-native'
+import {StyleSheet,View,Text,FlatList, Button} from 'react-native'
 import {FAB,List} from 'react-native-paper'
 import Header from '../component/Header'
 import {useSelector , useDispatch} from 'react-redux'
@@ -11,7 +11,7 @@ function ViewNotes({navigation}) {
     const dispatch = useDispatch()
      
     const addNote = note => {
-         console.log(note)
+         
          dispatch(addnote(note))
     }
 
@@ -29,10 +29,18 @@ function ViewNotes({navigation}) {
                 ):(
                    <FlatList
                    data = {notes}
-                   renderItem = {({item}) =>{
-                         console.log(item)
+                renderItem = {({item}) =>(
+                    
+                     <List.Item 
+                       title = {item.note.noteTitle} 
+                       description = {item.note.noteDescription}
+                       descriptionNumberOfLines = {1}
+                       titleStyle = {styles.listTitle}
+                       onPress = {() => deleteNote(item.id)}
+                    />
                         
-                   }}
+                        
+                )}
 
                    keyExtractor = {item => item.id.toString()}
                 />
